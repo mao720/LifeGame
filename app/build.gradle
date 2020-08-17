@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "top.lifegame"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation "androidx.fragment:fragment-ktx:1.2.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.8"
+
+    //ViewModel-ktx
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    //Appcompat(LifeCycle-*** ...)
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+
+    // Material design
+    implementation "com.google.android.material:material:1.2.0"
+
+    //ConstraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    //CardView
+    implementation "androidx.cardview:cardview:1.0.0"
+
+    //ImmersionBar
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
+    //ImmersionBar fragment快速实现（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-components:3.0.0'
+    //ImmersionBar kotlin扩展（可选）
+    implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
+
+    //Tencent MMKV
+    implementation 'com.tencent:mmkv-static:1.2.2'
+
+    //Logger
+    implementation 'com.orhanobut:logger:2.2.0'
+
+    //Catch crash
+    implementation 'cat.ereza:customactivityoncrash:2.3.0'
+
+    //DoraemonKit
+    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit:3.1.8'
+    debugImplementation 'com.didichuxing.doraemonkit:doraemonkit-leakcanary:3.1.8'
+    releaseImplementation 'com.didichuxing.doraemonkit:doraemonkit-no-op:3.1.8'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
