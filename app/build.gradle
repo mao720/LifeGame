@@ -69,6 +69,9 @@ dependencies {
     //ImmersionBar kotlin扩展（可选）
     implementation 'com.gyf.immersionbar:immersionbar-ktx:3.0.0'
 
+    //Tencent QMUI
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha10'
+
     //Tencent MMKV
     implementation 'com.tencent:mmkv-static:1.2.2'
 

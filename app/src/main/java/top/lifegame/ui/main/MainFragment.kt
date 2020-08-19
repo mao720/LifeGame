@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.orhanobut.logger.Logger
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import top.lifegame.R
 import top.lifegame.databinding.MainFragmentBinding
 import java.math.BigDecimal
