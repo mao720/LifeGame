@@ -46,41 +46,43 @@ class MainFragment : Fragment(), View.OnClickListener {
         lifecycle.addObserver(viewModel)
         viewModel.birthDay.observe(viewLifecycleOwner, Observer {
             //mainFragmentBinding.llBattery.visibility = if (it == 0L) View.GONE else View.VISIBLE
-            if (it != -1L) {
-                val birthDayFormat =
-                    SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE).format(Date(it))
-                Logger.d("birth_day:${birthDayFormat}")
-                val timePassed = (System.currentTimeMillis() - it) / 1000 / 60 / 60 / 24
-                val timeLeft = (Calendar.getInstance()
-                    .apply {
-                        set(
-                            2080,
-                            0,
-                            0
-                        )
-                    }.timeInMillis - System.currentTimeMillis()) / 1000 / 60 / 60 / 24
-                val birthDayBigDecimal =
-                    BigDecimal(timeLeft * 10000 / (timePassed + timeLeft)).divide(
-                        BigDecimal(100),
-                        2, RoundingMode.HALF_DOWN
-                    )
-                ValueAnimator.ofInt(
-                    mainFragmentBinding.wvBattery.heightDp,
-                    birthDayBigDecimal.multiply(BigDecimal(3)).toInt()
-                ).apply {
-                    duration = 2000
-                    addUpdateListener { animation ->
-                        val animatedValue: Int = animation.animatedValue as Int
-                        mainFragmentBinding.wvBattery.heightDp = animatedValue
-                    }
-                    start()
-                }
-                mainFragmentBinding.tvBattery.text = "${birthDayBigDecimal.toPlainString()}%"
-            } else {
-                mainFragmentBinding.wvBattery.heightDp = 300
-                Logger.d("birth_day:-1")
-            }
+            onBirthDayOrLifeSpanChange(it, viewModel.lifeSpan.value ?: -1)
         })
+        viewModel.lifeSpan.observe(viewLifecycleOwner, Observer {
+            onBirthDayOrLifeSpanChange(viewModel.birthDay.value ?: -1, it)
+        })
+    }
+
+    private fun onBirthDayOrLifeSpanChange(birthDay: Long, value: Int) {
+        if (birthDay != -1L) {
+            val birthDayFormat =
+                SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE).format(Date(birthDay))
+            Logger.d("birth_day:${birthDayFormat}")
+            val timePassed = (System.currentTimeMillis() - birthDay) / 1000 / 60 / 60 / 24
+            val timeLeft = (Calendar.getInstance()
+                .apply { set(2080, 0, 0) }
+                .timeInMillis - System.currentTimeMillis()) / 1000 / 60 / 60 / 24
+            val birthDayBigDecimal =
+                BigDecimal(timeLeft * 10000 / (timePassed + timeLeft)).divide(
+                    BigDecimal(100),
+                    2, RoundingMode.HALF_DOWN
+                )
+            ValueAnimator.ofInt(
+                mainFragmentBinding.wvBattery.heightDp,
+                birthDayBigDecimal.multiply(BigDecimal(3)).toInt()
+            ).apply {
+                duration = 2000
+                addUpdateListener { animation ->
+                    val animatedValue: Int = animation.animatedValue as Int
+                    mainFragmentBinding.wvBattery.heightDp = animatedValue
+                }
+                start()
+            }
+            mainFragmentBinding.tvBattery.text = "${birthDayBigDecimal.toPlainString()}%"
+        } else {
+            mainFragmentBinding.wvBattery.heightDp = 300
+            Logger.d("birth_day:-1")
+        }
     }
 
     fun onTextChanged(charSequence: CharSequence, start: Int, before: Int, count: Int) {
@@ -90,7 +92,7 @@ class MainFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.ll_battery -> {
-                this@MainFragment.context?.apply {
+                context?.apply {
                     val now = Calendar.getInstance()
                     val value = viewModel.birthDay.value ?: System.currentTimeMillis()
                     now.timeInMillis = if (value == -1L) System.currentTimeMillis() else value
@@ -109,8 +111,6 @@ class MainFragment : Fragment(), View.OnClickListener {
                         show()
                     }
                 }
-            }
-            else -> {
             }
         }
     }

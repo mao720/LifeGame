@@ -12,4 +12,8 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     val birthDay: MutableLiveData<Long> by lazy {
         mmkvRepository.getLong(lifecycleOwner, ConstMMKV.SETTING_BIRTH_DAY, -1L)
     }
+
+    val lifeSpan: MutableLiveData<Int> by lazy {
+        mmkvRepository.getInt(lifecycleOwner, ConstMMKV.SETTING_LIFE_SPAN, -1)
+    }
 }
